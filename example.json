@@ -1,0 +1,16 @@
+[
+  {
+    "url": "my/api/v2/request/", 
+    "ans_body": "{\"status\":\"ongoing\"}",
+    "use_up": 2
+  },
+  {
+    "url": "my/api/v2/request/",
+    "ans_body": "{ \"status\": \"finished\", \"objects\": [\"fresh\", \"and\", \"clean\"] }"
+  },
+  {
+    "url": "my/api/v2/bad/request/",
+    "req_method": "POST",
+    "ans_status": 500 
+  }
+]

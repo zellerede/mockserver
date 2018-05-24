@@ -1,0 +1,35 @@
+[
+  {
+    "model": "mockapi.mockAnswer",
+    "fields": {
+      "url": "sas/",
+      "ans_body": "[2,3,4]"
+    }
+  },
+  {
+    "model": "mockapi.mockAnswer",
+    "fields": {
+      "url": "sas/error/",
+      "ans_body": "\"oh boy\"",
+      "ans_status": 502
+    }
+  },
+  {
+    "model": "mockapi.mockAnswer",
+    "fields": {
+      "url": "sas/error/",
+      "req_method": "DELETE",
+      "ans_body": "\"fatal\"",
+      "ans_status": 597
+    }
+  },
+  {
+    "model": "mockapi.mockAnswer",
+    "fields": {
+      "url": "sas/",
+      "req_method": "POST",
+      "ans_status": 201
+    }
+  }
+]
+

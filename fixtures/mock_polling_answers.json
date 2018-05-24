@@ -1,0 +1,18 @@
+[
+  {
+    "model": "mockapi.mockAnswer",
+    "fields": {
+      "url": "sas/",
+      "ans_body": "[1,2,3,4]",
+      "use_up": 4
+    }
+  },
+  {
+    "model": "mockapi.mockAnswer",
+    "fields": {
+      "url": "sas/",
+      "ans_body": "[5,6,7,\"...\"]"
+    }
+  }
+]
+
