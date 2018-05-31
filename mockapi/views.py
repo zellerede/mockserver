@@ -65,7 +65,8 @@ def mocking(request, path):
 
 def mock_for(request, answer):
     answerBody = json.loads( answer.ans_body ) if answer.ans_body else None
-    answer.req_body = json.dumps(request.data)
+    if "json" in request.content_type:
+        answer.req_body = json.dumps(request.data)
     answer.query_params = json.dumps(request.query_params)
     if answer.use_up:
         answer.use_up -= 1
@@ -77,9 +78,9 @@ def mock_for(request, answer):
 
 def default_response(request, path):
     return Response({
+        "THIS": "MOCK ANSWER IS NOT SET YET.",
         "query_params": request.query_params,
         "method": request.method,
-        "data": request.data, 
         "path": path,
     }, status=404)
 

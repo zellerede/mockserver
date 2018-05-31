@@ -4,18 +4,27 @@ Documentation    Tests assume MockServer is running on localhost:8000
 Resource      mock_server.robot
 
 *** Variables ***
-${mockserver_ip}    localhost:8000
+${Fixtures}    ${CURDIR}/..
 
 *** Test Cases ***
 Try Init Without Parameters
     Init MockServer
 
 Try Init With Json
-    Init MockServer    ${mockserver_ip}    ${CURDIR}/../example.json
+    Init MockServer    ${Fixtures}/example.json
 
-Try Load MockAnswers
+Try Load JSON MockAnswers
     [Setup]    Init MockServer
-    Load MockAnswers JSONs    ${CURDIR}/../example.json    ${CURDIR}/../example2.json
+    MockServer API    GET    /abce/    status=404
+    Load MockAnswers    JSON    ${Fixtures}/example.json    ${Fixtures}/example2.json
+    MockServer API    GET    /abce/    status=204
+
+Try Load YAML MockAnswers
+    [Setup]    Init MockServer
+    MockServer API    DELETE    /my/api/v2/job/    status=404
+    Load MockAnswers    YAML    ${Fixtures}/example.yaml    ${Fixtures}/example2.yaml
+    MockServer API    DELETE    /my/api/v2/job/    status=412
+    MockServer API    DELETE    /my/api/v2/job/    status=204
 
 Try Prepare Answer
     [Setup]    Init MockServer

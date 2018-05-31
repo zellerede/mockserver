@@ -3,25 +3,33 @@ Documentation     Drive and feed the mock server, which is assumed to run.
 
 Library           OperatingSystem
 Library           HttpLibrary.HTTP
+Library           yaml2json.py
+
+*** Variables ***
+${MOCK_URL}    localhost:8000
 
 *** Keywords ***
 Init MockServer
-    [Arguments]    ${url}=localhost:8000    @{jsons}
-    Set Global Variable    ${mock_url}     ${url}
+    [Arguments]    @{jsons}
     Delete All MockAnswers
-    Load MockAnswers JSONs    @{jsons}
+    Load MockAnswers    JSON    @{jsons}
 
 Delete All MockAnswers
     MockServer API    DELETE   /__mock/bulk/
 
-Load MockAnswers JSONs
-    [Arguments]    @{jsons}
-    :FOR    ${json}    IN    @{jsons}
-    \    Create MockAnswers By    ${json}
+Load MockAnswers
+    [Arguments]    ${type}=YAML   @{files}
+    :FOR    ${file}    IN    @{files}
+    \    Run Keyword    Create MockAnswers By ${type}   ${file}
 
-Create MockAnswers By
+Create MockAnswers By JSON
     [Arguments]    ${json}
     ${data}=    Get File    ${json}
+    MockServer API    POST   /__mock/bulk/    data=${data}
+
+Create MockAnswers By YAML
+    [Arguments]    ${yaml}
+    ${data}=    Get JSON From YAML    ${yaml}
     MockServer API    POST   /__mock/bulk/    data=${data}
 
 Prepare MockAnswer
@@ -29,9 +37,10 @@ Prepare MockAnswer
     ${data}=    Evaluate    json.dumps(${fields})    json
     MockServer API    POST    /__mock/    data=${data}
 
+#
 MockServer API
     [Arguments]    ${method}   ${path}    ${data}=${EMPTY}    ${status}=${EMPTY}
-    Create Http Context    ${mock_url}
+    Create Http Context    ${MOCK_URL}
     Run Keyword Unless    """${data}"""==""    Run Keywords
     ...    Set Request Body    ${data}    AND
     ...    Set Request Header    Content-Type    application/json

@@ -3,7 +3,7 @@ FROM ubuntu:latest
 WORKDIR /root
 RUN  apt-get update
 RUN  apt-get install -y python python-pip git
-RUN  pip install django djangorestframework django-url-filter django-sslserver
+RUN  pip install django djangorestframework django-url-filter django-sslserver pyyaml
 RUN  git clone https://github.com/zellerede/mockserver.git
 
 WORKDIR /root/mockserver

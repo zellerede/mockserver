@@ -1,0 +1,22 @@
+--- # MockAnswer messages in YAML format # ---
+
+- url: my/api/v2/job/
+  req_method: POST
+  ans_body: >
+    [
+      "Answer body can be a nice json here",
+      "no escape is needed for the quotation marks",
+      "and line breaks are allowed, too",
+      "only that we have to keep the indentation"
+    ]
+
+- url: my/api/v2/job/
+  req_method: DELETE
+  use_up: 1
+  ans_body: >
+    "Operation DELETE is not allowed"
+  ans_status: 412
+
+- url: my/api/v2/job/
+  req_method: DELETE
+  ans_status: 204
