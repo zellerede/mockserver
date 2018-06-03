@@ -87,3 +87,30 @@ The field `use_up` can be set to an integer to indicate how many times the answe
     curl -v $MS/poll/   # done
     curl -v $MS/poll/   # done
 
+Extras
+------
+
+#### YAML support
+We can create new MockAnswer records also using YAML format. It's practical, since it can display the json inside the data in a more readable way. Use the following command and study the example yaml files.
+
+    ./manage.py loadyaml example.yaml example2.yaml
+
+#### Robot Framework support
+The mock server is assumed to run in the background when test execution starts.
+Import the library as
+
+    Resource  |  path/to/mockserver/robot_keywords/mock_server.robot
+
+The following robot keywords are implemented:
+
+    Init Mockserver  |  [json file]  |  [json file2]  |  [...]
+-- clears all MockAnswer records and loads the given json fixtures if given.
+ 
+    Delete All MockAnswers
+-- clears all MockAnswer records.
+
+    Load MockAnswers  |  YAML/JSON  |  file   |  [file2]  |  [...]
+-- loads MockAnswer records from the given json/yaml file(s).
+
+    Prepare MockAnswer  |  url=<url>  |  [ans_status=<status>]    [ans_body=<ans_body>]  |  [...]
+-- creates a MockAnswer record based on the given parameters.
