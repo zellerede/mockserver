@@ -52,7 +52,7 @@ class MockAnswersView(ListViewSet):
 
 ###
 
-@api_view(["DELETE", "GET", "PATCH", "POST", "PUT"])
+@api_view(["DELETE", "GET", "HEAD", "PATCH", "POST", "PUT"])
 def mocking(request, path):
     mockAnswers = MockAnswer.objects
     answer = mockAnswers.filter(
@@ -64,7 +64,8 @@ def mocking(request, path):
     return default_response(request, path)
 
 def mock_for(request, answer):
-    answerBody = json.loads( answer.ans_body ) if answer.ans_body else None
+    answerBody = json_decode( answer.ans_body )
+    answerHeader = json_decode( answer.ans_header )
     if "json" in request.content_type:
         answer.req_body = json.dumps(request.data)
     answer.query_params = json.dumps(request.query_params)
@@ -74,7 +75,7 @@ def mock_for(request, answer):
         answer.delete()
     else:
         answer.save()
-    return Response(answerBody, answer.ans_status)
+    return Response(answerBody, answer.ans_status, headers=answerHeader)
 
 def default_response(request, path):
     return Response({
@@ -84,16 +85,14 @@ def default_response(request, path):
         "path": path,
     }, status=404)
 
+def json_decode(text):
+    if text: return json.loads(text)
 
 # -todo:
 #
 # variables in URL's to mock
 #
-# https!!!  -- with external nginx
-#
 # rather save a History??
 # 
-# credentials in headers??  -- might not be needed
-#
  
 

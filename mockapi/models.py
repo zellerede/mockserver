@@ -10,7 +10,8 @@ class MockAnswer(Model):
     query_params = TextField(default="")
     req_body = TextField(default="")
     ans_status = IntegerField(default=200)
+    ans_header = CharField(max_length=500, default="")
     ans_body = TextField(default="")
     
-    __str__ = lambda self: "{} /{}".format(self.req_method, self.url)
+    __str__ = lambda self: "{} /{} -> {}".format(self.req_method, self.url, self.ans_status)
     

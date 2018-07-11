@@ -13,16 +13,19 @@ Try Init Without Parameters
 Try Init With Json
     Init MockServer    ${Fixtures}/example.json
 
+Try Init With Yaml
+    Init MockServer    ${Fixtures}/example.yaml
+
 Try Load JSON MockAnswers
     [Setup]    Init MockServer
     MockServer API    GET    /abce/    status=404
-    Load MockAnswers    JSON    ${Fixtures}/example.json    ${Fixtures}/example2.json
+    Load MockAnswers    ${Fixtures}/example.json    ${Fixtures}/example2.json
     MockServer API    GET    /abce/    status=204
 
 Try Load YAML MockAnswers
     [Setup]    Init MockServer
     MockServer API    DELETE    /my/api/v2/job/    status=404
-    Load MockAnswers    YAML    ${Fixtures}/example.yaml    ${Fixtures}/example2.yaml
+    Load MockAnswers    ${Fixtures}/example.yaml    ${Fixtures}/example2.yaml
     MockServer API    DELETE    /my/api/v2/job/    status=412
     MockServer API    DELETE    /my/api/v2/job/    status=204
 
@@ -33,3 +36,4 @@ Try Prepare Answer
     :FOR    ${i}    IN RANGE    5
     \    ${response}=    MockServer API    GET    /deploy/
     \    Log    ${response}
+

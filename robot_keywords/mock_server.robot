@@ -10,16 +10,17 @@ ${MOCK_URL}    localhost:8000
 
 *** Keywords ***
 Init MockServer
-    [Arguments]    @{jsons}
+    [Arguments]    @{files}
     Delete All MockAnswers
-    Load MockAnswers    JSON    @{jsons}
+    Load MockAnswers    @{files}
 
 Delete All MockAnswers
     MockServer API    DELETE   /__mock/bulk/
 
 Load MockAnswers
-    [Arguments]    ${type}=YAML   @{files}
+    [Arguments]    @{files}
     :FOR    ${file}    IN    @{files}
+    \    ${path}    ${type}=    Split Extension    ${file}
     \    Run Keyword    Create MockAnswers By ${type}   ${file}
 
 Create MockAnswers By JSON
@@ -28,7 +29,9 @@ Create MockAnswers By JSON
     MockServer API    POST   /__mock/bulk/    data=${data}
 
 Create MockAnswers By YAML
-    [Arguments]    ${yaml}
+    [Arguments]    ${yaml_file}
+    ${yaml}=    Get File    ${yaml_file}
+    ${yaml}=    Replace Variables    ${yaml}
     ${data}=    Get JSON From YAML    ${yaml}
     MockServer API    POST   /__mock/bulk/    data=${data}
 
